@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANIPU — Online Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --ink-soft:#141414;
+    --paper:#ffffff;
+    --pink:#da1a7a;
+    --pink-deep:#5e0c37;
+    --pink-soft:#ff5fac;
+    --pink-mist:rgba(218,26,122,.35);
+    --line:rgba(0,0,0,.1);
+    --line-light:rgba(255,255,255,.14);
+    --radius-pill:999px;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',-apple-system,sans-serif;
+    background:var(--ink);
+    color:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+  /* ---------- NAV ---------- */
+  .navwrap{
+    position:fixed;top:18px;left:0;right:0;z-index:100;
+    display:flex;justify-content:center;padding:0 20px;
+  }
+  nav{
+    width:100%;max-width:1180px;
+    background:var(--paper);
+    border-radius:var(--radius-pill);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 10px 10px 26px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .logo{
+    font-family:'Unbounded',sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:.01em;
+    color:var(--ink);
+    display:flex;align-items:center;
+  }
+  .logo .ipu{color:var(--pink);}
+  .navlinks{
+    display:flex;gap:30px;
+    font-size:.9rem;font-weight:500;color:var(--ink);
+  }
+  .navlinks a{opacity:.7;transition:opacity .2s var(--ease);}
+  .navlinks a:hover{opacity:1;}
+  .navauth{display:flex;gap:8px;align-items:center;}
+  .pill{
+    border-radius:var(--radius-pill);
+    padding:11px 22px;
+    font-size:.86rem;font-weight:600;
+    transition:transform .2s var(--ease), background .2s var(--ease), box-shadow .2s var(--ease);
+    white-space:nowrap;
+  }
+  .pill-outline{
+    background:transparent;color:var(--ink);
+    border:1.5px solid var(--ink);
+  }
+  .pill-outline:hover{background:var(--ink);color:var(--paper);}
+  .pill-solid{
+    background:var(--pink);color:var(--paper);
+  }
+  .pill-solid:hover{background:var(--ink);transform:translateY(-1px);box-shadow:0 8px 20px var(--pink-mist);}
+  .hamburger{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    padding:140px 24px 80px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 100%, #1a0410 0%, var(--ink) 60%);
+  }
+  .glow{position:absolute;pointer-events:none;filter:blur(60px);opacity:.55;}
+  .glow-a{
+    width:60vw;height:60vw;max-width:900px;max-height:900px;
+    left:-15%;top:-10%;
+    background:radial-gradient(circle, var(--pink) 0%, transparent 65%);
+    animation:drift1 16s ease-in-out infinite;
+  }
+  .glow-b{
+    width:50vw;height:50vw;max-width:700px;max-height:700px;
+    right:-10%;bottom:-15%;
+    background:radial-gradient(circle, var(--pink-deep) 0%, transparent 65%);
+    animation:drift2 20s ease-in-out infinite;
+  }
+  @keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(3%,4%)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-3%,-4%)}}
+  .streaks{
+    position:absolute;inset:0;
+    background-image:repeating-linear-gradient(100deg, transparent 0 40px, rgba(255,255,255,.025) 40px 41px);
+    mix-blend-mode:screen;
+  }
+
+  .eyebrow{
+    position:relative;z-index:2;
+    font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--pink-soft);font-weight:600;margin-bottom:22px;
+  }
+  h1{
+    position:relative;z-index:2;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.9rem,4.4vw,3.1rem);
+    line-height:1.15;
+    color:var(--paper);
+    margin-bottom:6px;
+  }
+  .store-word{
+    display:block;
+    font-family:'Unbounded',sans-serif;
+    font-weight:800;
+    font-size:clamp(3.6rem,11vw,8rem);
+    line-height:1;
+    letter-spacing:.01em;
+    color:var(--pink);
+    margin:8px 0 22px;
+    text-shadow:0 0 60px var(--pink-mist);
+  }
+  .hero p{
+    position:relative;z-index:2;
+    max-width:560px;
+    color:rgba(255,255,255,.68);
+    font-size:1.02rem;line-height:1.6;
+    margin-bottom:38px;
+  }
+  .hero-cta{
+    position:relative;z-index:2;
+    display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:56px;
+  }
+  .btn-primary{
+    background:var(--pink);color:var(--paper);
+    border-radius:var(--radius-pill);
+    padding:16px 34px;font-weight:600;font-size:.95rem;
+    box-shadow:0 12px 30px var(--pink-mist);
+    transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 38px var(--pink-mist);}
+  .btn-ghost{
+    border:1.5px solid var(--line-light);color:var(--paper);
+    border-radius:var(--radius-pill);
+    padding:16px 30px;font-weight:600;font-size:.95rem;
+    transition:border-color .2s var(--ease), background .2s var(--ease);
+  }
+  .btn-ghost:hover{border-color:var(--paper);background:rgba(255,255,255,.06);}
+
+  .trust{
+    position:relative;z-index:2;
+    display:flex;align-items:center;gap:10px;
+    color:rgba(255,255,255,.55);font-size:.85rem;
+  }
+  .stars{color:var(--pink-soft);letter-spacing:2px;font-size:.95rem;}
+
+  /* ---------- FOOTER (clean, professional, replaces old black bar) ---------- */
+  footer{
+    background:var(--ink);
+    border-top:1px solid var(--line-light);
+    padding:26px 24px;
+    text-align:center;
+    color:rgba(255,255,255,.4);
+    font-size:.8rem;
+  }
+  footer .fipu{color:var(--pink-soft);}
+
+  /* ---------- LOGIN MODAL ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(10,10,10,.72);
+    backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    opacity:0;pointer-events:none;
+    transition:opacity .25s var(--ease);
+  }
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  .modal{
+    background:var(--paper);color:var(--ink);
+    width:100%;max-width:380px;
+    border-radius:22px;
+    padding:38px 32px 32px;
+    position:relative;
+    transform:translateY(14px) scale(.97);
+    transition:transform .25s var(--ease);
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .modal-backdrop.open .modal{transform:translateY(0) scale(1);}
+  .modal-close{
+    position:absolute;top:16px;right:18px;
+    font-size:1.3rem;color:rgba(0,0,0,.4);
+    line-height:1;
+  }
+  .modal-close:hover{color:var(--ink);}
+  .modal h2{
+    font-family:'Unbounded',sans-serif;
+    font-size:1.3rem;font-weight:700;margin-bottom:4px;
+  }
+  .modal h2 .ipu{color:var(--pink);}
+  .modal .sub{font-size:.85rem;color:rgba(0,0,0,.5);margin-bottom:26px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:.78rem;font-weight:600;color:rgba(0,0,0,.55);margin-bottom:6px;}
+  .field input{
+    width:100%;padding:13px 16px;
+    border:1.5px solid rgba(0,0,0,.14);
+    border-radius:12px;
+    font-size:.95rem;font-family:inherit;
+    outline:none;
+    transition:border-color .2s var(--ease);
+  }
+  .field input:focus{border-color:var(--pink);}
+  .modal-submit{
+    width:100%;
+    background:var(--ink);color:var(--paper);
+    border-radius:var(--radius-pill);
+    padding:14px;font-weight:600;font-size:.92rem;
+    margin-top:8px;
+    transition:background .2s var(--ease);
+  }
+  .modal-submit:hover{background:var(--pink);}
+  .modal-signup{
+    text-align:center;margin-top:18px;
+    font-size:.85rem;color:rgba(0,0,0,.55);
+  }
+  .modal-signup button{color:var(--pink);font-weight:600;}
+  .modal-error{
+    display:none;
+    font-size:.8rem;color:var(--pink);
+    background:rgba(218,26,122,.08);
+    border-radius:10px;padding:10px 12px;margin-bottom:14px;
+  }
+
+  @media (max-width:760px){
+    .navlinks{display:none;}
+    nav{padding:10px 10px 10px 20px;}
+    .pill{padding:10px 16px;font-size:.8rem;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .glow-a,.glow-b{animation:none;}
+  }
+.dropdown:hover .dropdown-content {
+    display: block !important;
+  }
+
+/* Disenyo kapag itinapat ang mouse sa loob ng mga pagpipilian */
+.dropdown-content a:hover {
+    background-color: #222222 !important;
+    color: #ff007f !important; /* Kulay pink na katulad ng accent mo */
+    padding-left: 22px !important; /* Kaunting galaw pakanan para swabe */
+  }
+
+/* I-update mo ang .hero sa CSS mo na maging ganito ang background */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: transparent !important; /* 🔥 GINAWANG TRANSPARENT PARA MAKITA ANG VIDEO SA LIKOD */
+    /* panatilihin mo lang ang ibang kasamang linya gaya ng padding o height */
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- ================= NAV ================= -->
+  <div class="navwrap">
+    <nav>
+      <div class="logo">MAN<span class="ipu">IPU</span></div>
+      <div class="navlinks">
+
+        <!-- 🛠️ INAYOS NA DROPDOWN: May dagdag na padding-bottom para maging bridge ng mouse -->
+        <div class="dropdown" style="position: relative; display: inline-block; padding-bottom: 15px; margin-bottom: -15px;">
+          <a href="#" class="dropbtn" style="text-decoration: none; padding: 10px 0;">Shop ▼</a>
+          <div class="dropdown-content" style="display: none; position: absolute; background-color: #111111; min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.5); z-index: 1000; border-radius: 4px; border: 1px solid #222222; text-align: left; top: 35px; left: 0;">
+            <a href="product.html" style="color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 14px; transition: all 0.2s ease;">Shoe Shop</a>
+            <a href="clothes.html" style="color: white; padding: 12px 16px; text-decoration: none; display: block; font-size: 14px; transition: all 0.2s ease;">Clothing Shop</a>
+          </div>
+        </div>
+
+        <a href="#">Collections</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="navauth">
+        <button class="pill pill-outline" onclick="openLogin()">Log in</button>
+        <button class="pill pill-solid" onclick="goToSignup()">Sign up</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ================= PRO-LEVEL HERO SECTION WITH EXTENDED LAYOUT ================= -->
+  <section class="hero" style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 120px 5% 60px 5%; background: #0b0b0b;">
+    
+    <!-- MGA LUMANG GLOW EFFECTS MO -->
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+    <div class="streaks"></div>
+
+    <!-- MAIN CONTAINER FOR TEXT -->
+    <div class="hero-content" style="max-width: 900px; text-align: center; position: relative; z-index: 3; margin-bottom: 60px;">
+      
+      <!-- SUBTITLE (Inayos ang espasyo) -->
+      <div class="eyebrow" style="letter-spacing: 4px; text-transform: uppercase; font-size: 0.95rem; color: #ff007f; font-weight: 600; margin-bottom: 25px;">
+        Welcome to your favorite shop
+      </div>
+      
+      <!-- 👑 PINALUWAG NA PAMAGAT (Hinding-hindi na magdidikit o maiipit) -->
+      <h1 style="font-size: 3.6rem; font-weight: 800; color: white; line-height: 1.4; letter-spacing: 2px; margin-bottom: 25px; text-transform: uppercase;">
+        Welcome to our <span class="store-word" style="color: #ff007f; letter-spacing: 8px; font-weight: 900; padding: 0 5px;">STORE</span>
+      </h1>
+      
+      <!-- DEKORASYONG LINYA PARA SA PREMIUM VIBE -->
+      <div style="width: 60px; height: 3px; background: #ff007f; margin: 0 auto 30px auto; border-radius: 2px;"></div>
+      
+      <!-- DESCRIPTION (Maluwag at madaling basahin) -->
+      <p style="font-size: 1.2rem; color: #999999; line-height: 1.8; letter-spacing: 0.8px; max-width: 700px; margin: 0 auto 40px auto;">
+        Fresh drops, honest prices, and pieces made for everyday wear. Browse the collection and find something you'll actually reach for.
+      </p>
+
+      <!-- CTA BUTTONS -->
+      <div class="hero-cta" style="display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;">
+        <a href="product.html" class="btn-primary" style="padding: 15px 36px; background: #ff007f; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; letter-spacing: 1px; font-size: 0.95rem; display: inline-block; box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);">Start Shopping</a>
+        <button class="btn-ghost" onclick="goToSignup()" style="padding: 15px 36px; background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; cursor: pointer; letter-spacing: 1px; font-size: 0.95rem; transition: all 0.2s;">Create an account</button>
+      </div>
+
+      <!-- TRUST LOGO SECTION -->
+      <div class="trust" style="color: #555555; font-size: 0.9rem; letter-spacing: 1px; margin-top: 30px;">
+        <span class="stars" style="color: #ff007f; margin-right: 6px;">★★★★★</span>
+        <span>Loved by 100+ shoppers nationwide</span>
+      </div>
+    </div>
+
+    <!-- 🎬 CINEMATIC WIDE VIDEO CARD: Premium horizontal layout para sa pro-level aesthetic -->
+    <div class="hero-video-card" style="width: 100%; max-width: 950px; height: 480px; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); border: 1px solid #1c1c1c; position: relative; z-index: 5; margin-bottom: 40px;">
+      <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
+        <!-- Tinatawag ang sapatos video mula sa iyong assets folder sa backend server -->
+        <source src="http://localhost:3000/shoes.mp4" type="video/mp4">
+        Hindi suportado ng browser mo ang video tag.
+      </video>
+    </div>
+
+  </section>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    © 2026 MAN<span class="fipu">IPU</span>. All rights reserved.
+  </footer>
+
+  <!-- ================= LOGIN MODAL ================= -->
+  <div class="modal-backdrop" id="loginBackdrop">
+    <div class="modal">
+      <button class="modal-close" onclick="closeLogin()">&times;</button>
+      <h2>Log in to MAN<span class="ipu">IPU</span></h2>
+      <p class="sub">Enter your details to continue.</p>
+
+      <div class="modal-error" id="loginError">Something went wrong. Please try again.</div>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required autofocus>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="modal-submit">Submit</button>
+      </form>
+
+      <div class="modal-signup">
+        Wala pang account? <button onclick="goToSignup()">Mag-sign up dito</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  // ============================================================
+  // NODE.JS BACKEND ENDPOINT
+  // Dito natin ididirekta ang katok mula sa frontend mo.
+  // ============================================================
+  const NODEJS_LOGIN_URL = "http://localhost:3000/api/login";
+
+  const backdrop   = document.getElementById('loginBackdrop');
+  const loginForm  = document.getElementById('loginForm');
+  const loginError = document.getElementById('loginError');
+
+  function openLogin(){
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(()=>document.getElementById('username').focus(), 200);
+  }
+  function closeLogin(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    loginError.style.display = 'none';
+  }
+  backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeLogin(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLogin(); });
+
+  // ---- LOGIN: Nagpapadala na ngayon ng data sa Node.js at nagbeverify sa Supabase ----
+  loginForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    loginError.style.display = 'none';
+    
+    // Kinukuha ang laman ng input fields base sa mga ID na ginawa ni Claude
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Pagsusuri kung may laman ang fields
+    if (!username || !password) {
+      loginError.textContent = "Mangyaring isulat ang iyong username at password.";
+      loginError.style.display = 'block';
+      return;
+    }
+
+    try {
+      // 1. Kakatok tayo sa Node.js backend mo
+      const res = await fetch(NODEJS_LOGIN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const resulta = await res.json();
+
+      // 2. Kung nagtagumpay ang pag-check ni Node.js + Supabase
+      if (resulta.success) {
+        alert("Login Successful! Welcome, " + resulta.user.username + "!");
+        
+        // Itatabi natin ang JWT Token sa browser para tandaan na naka-log in ka na
+        localStorage.setItem('userToken', resulta.token);
+
+        // 🔥 ANG TULAY: Diretso na sila sa iyong mga produkto!
+        window.location.href = "product.html";
+        
+      } else {
+        // Kung mali ang username o password ayon kay Supabase
+        loginError.textContent = resulta.message;
+        loginError.style.display = 'block';
+      }
+
+    } catch(err) {
+      loginError.textContent = "Hindi makakonekta sa Node.js server. Siguraduhing gising ang server mo sa VS Code!";
+      loginError.style.display = 'block';
+      console.error("May error sa pag-connect:", err);
+    }
+  });
+
+  // ---- SIGN UP: Lilipat sa hiwalay na Create Account page ----
+  function goToSignup(){
+    // Dahil hiwalay ang pahina ng Sign Up mo, ididirekta natin sila sa file na iyon.
+    // Palitan mo ang "createaccount.html" kung iba ang pinangalan mo sa file mo.
+    window.location.href = "createaccount.html"; 
+  }
+</script>
+</body>
+</html>
